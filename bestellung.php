@@ -21,7 +21,6 @@
         </h1>
     </header>
 
-    
 
     <h1>Speisekarte</h1>
     <section> 
