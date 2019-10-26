@@ -10,11 +10,30 @@
 
 
     <section id="fahrerBereich">
-        <?php
-           
-     
-        
-        ?>     
+    <form action="https://echo.fbi.h-da.de/" method="POST" id="test1">
+        <div id="schulzId">
+        <p>Schulz, Kasinostr. 5 13,50€</p>
+        <span>fertig</span>
+        <span>unterwegs</span>
+        <span>geliefert</span>
+        <br>        
+        <span><input type="radio" name="status" value="fertig"></span>
+        <span><input type="radio" name="status" value="unterwegs"></span>
+        <span><input type="radio" name="status" value="geliefert"></span>
+        </div>
+
+        <div id="muellerId">
+        <p>Müller, Rheinstr. 11 10,00€</p>
+        <span>fertig</span>
+        <span>unterwegs</span>
+        <span>geliefert</span>
+        <br>        
+        <span><input type="radio" name="status1" value="fertig"></span>
+        <span><input type="radio" name="status1" value="unterwegs"></span>
+        <span><input type="radio" name="status1" value="geliefert"></span>
+        </div>
+        </form>
+        <input type="submit" form="test1">
     </section>
 
 

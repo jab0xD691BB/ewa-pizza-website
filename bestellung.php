@@ -8,13 +8,13 @@
     <!-- für später: JavaScript include -->
     <!-- <script src="XXX.js"></script> -->
 
-    <?php header("Content-type: text/html; charset=UTF-8")?>
+    <?php header("Content-type: text/html; charset=UTF-8") ?>
 
     <title>Bestellung</title>
 </head>
 
 <body>
-    <header>
+    <header class="header">
         <h1>
             <!-- h1 - h6 header(groß & bold) / nicht einfach nur <h1>-->
             Bestellung
@@ -22,40 +22,47 @@
     </header>
 
 
-    <h1>Speisekarte</h1>
-    <section> 
-    <p data-preis="4.00">Margherita</p>
-    <p>4.00€</p>
-    <p data-preis="4.50">Salami</p>
-    <p>4.50€</p>
-    <p data-preis="5.00">Hawaii</p>
-    <p>5.50€</p>
+    <section class="speisekarte">
+        <h1>Speisekarte</h1>
+        
+        <img src="img/pizza_ma.png" width="125" height="125">
+        <p data-preis="4.00">Margherita</p>
+        <p>4.00€</p>
+
+        <img src="img/pizza_ma.png" width="125" height="125">
+        <p data-preis="4.50">Salami</p>
+        <p>4.50€</p>
+
+        <img src="img/pizza_ma.png" width="125" height="125">
+        <p data-preis="5.00">Hawaii</p>
+        <p>5.50€</p>
+
     </section>
 
+    <section class="warenkorb">
+        <h1>
+            Warenkorb
+        </h1>
 
-    <h1>
-        Warenkorb
-    </h1>
+        <form action="https://echo.fbi.h-da.de/" method="POST" accept-charset="UTF-8">
+            <select name="pizzen[]" size="7" multiple>
+                <option value="margherita">Margherita</option>
+                <option value="salami">Salami</option>
+                <option value="hawaii">Hawaii</option>
+            </select>
 
-    <form action="https://echo.fbi.h-da.de/" method="POST" accept-charset="UTF-8">
-        <select name="pizzen[]" size="7" multiple>
-            <option value="margherita">Margherita</option>
-            <option value="salami">Salami</option>
-            <option value="hawaii">Hawaii</option>
-        </select>
-
-        <p>14.50€</p>
-
-
-        <p><input type="text" name="adresse" placeholder="Ihre Adresse" required></p>
+            <p>14.50€</p>
 
 
-        <button type="button">Alle Löschen</button>
-        <button type="button">Auswahl Löschen</button>
-        <input type="submit" value="Bestellen">
-    </form>
+            <p><input type="text" name="adresse" placeholder="Ihre Adresse" required></p>
 
 
+            <button type="button">Alle Löschen</button>
+            <button type="button">Auswahl Löschen</button>
+            <input type="submit" value="Bestellen">
+        </form>
+
+    </section>
 
 
 </body>
