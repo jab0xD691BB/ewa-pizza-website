@@ -13,57 +13,57 @@
 
 
     <section id="bestellBereich">
-        <?php
+        <!--<?php
         echo <<<EOT
+        EOT;
+        ?>-->
         <form action="https://echo.fbi.h-da.de/" method="POST" id="test1">
-            <table>
-                <tr>
-                    <th></th>               
-                    <th>bestellt</th>
-                    <th>im Ofen</th>
-                    <th>fertig</th>
-                </tr>
-                <tr id="margherita">
-                <th>Margherita</th>
-                    <td>
-                    <input type="radio" name="statusMar" value="bestellt">
-                    </td>
-                    <td>
+            <div class="table">
+                <div class="tr">
+                    <div class="th"></div>               
+                    <div class="th">bestellt</div>
+                    <div class="th">im Ofen</div>
+                    <div class="th">fertig</div>
+                </div>
+                <div id="margherita">
+                <div class="th">Margherita</div>
+                    <div class="td">
+                    <input type="radio" name="statusMar" value="bestellt" checked>
+                    </div>
+                    <div class="td">
                     <input type="radio" name="statusMar" value="imOfen">
-                    </td>
-                    <td>
+                    </div>
+                    <div class="td">
                     <input type="radio" name="statusMar" value="fertig">
-                    </td>
-                </tr>
-                <tr id="Salami">
-                <th>Salami</th>
-                    <td>
+                    </div>
+                </div>
+                <div id="Salami">
+                <div class="th">Salami</div>
+                    <div class="td">
                     <input type="radio" name="statusSa" value="bestellt">
-                    </td>
-                    <td>
-                    <input type="radio" name="statusSa" value="imOfen">
-                    </td>
-                    <td>
+                    </div>
+                    <div class="td">
+                    <input type="radio" name="statusSa" value="imOfen" checked>
+                    </div>
+                    <div class="td">
                     <input type="radio" name="statusSa" value="fertig">
-                    </td>
-                </tr>
-                <tr id="Hawaii">
-                <th>Hawaii</th>
-                    <td>
+                    </div>
+                </div>
+                <div id="Hawaii">
+                <div class="th">Hawaii</div>
+                    <div class="td">
                     <input type="radio" name="statusHaw" value="bestellt">
-                    </td>
-                    <td>
+                    </div>
+                    <div class="td">
                     <input type="radio" name="statusHaw" value="imOfen">
-                    </td>
-                    <td>
-                    <input type="radio" name="statusHaw" value="fertig">
-                    </td>
-                </tr>
-            </table>
+                    </div>
+                    <div class="td">
+                    <input type="radio" name="statusHaw" value="fertig" checked>
+                    </div>
+                </div>
+            </div>
         </form>
         <input type="submit" form="test1">
-        EOT;
-        ?>
     </section>
 
     
