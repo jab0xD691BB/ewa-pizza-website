@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="de">
-
+<!-- rockstar -->
 <head>
     <meta charset="UTF-8" />
     <!-- für später: CSS include -->
@@ -25,7 +25,7 @@
 
     <section class="speisekarte">
         <h2>Speisekarte</h2>
-        
+
         <img src="img/pizza_ma.png" width="125" height="125" alt="Margherita">
         <p data-preis="4.00" id="margherita">Margherita</p>
         <p>4.00€</p>
@@ -46,7 +46,7 @@
         </h2>
 
         <form id="ware" action="https://echo.fbi.h-da.de/" method="POST" accept-charset="UTF-8">
-            <select name="pizzen[]" size="7"  multiple tabindex="0"> 
+            <select name="pizzen[]" size="7"  multiple tabindex="0">
                 <option value="margherita" selected>Margherita</option>
                 <option value="salami" selected>Salami</option>
                 <option value="hawaii" selected>Hawaii</option>
