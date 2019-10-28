@@ -22,11 +22,12 @@
     </header>
 
 
+
     <section class="speisekarte">
         <h2>Speisekarte</h2>
         
         <img src="img/pizza_ma.png" width="125" height="125" alt="Margherita">
-        <p data-preis="4.00">Margherita</p>
+        <p data-preis="4.00" id="margherita">Margherita</p>
         <p>4.00€</p>
 
         <img src="img/pizza_ma.png" width="125" height="125" alt="Salami">
