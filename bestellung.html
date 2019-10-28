@@ -45,7 +45,7 @@
             Warenkorb
         </h2>
 
-        <form id="ware" action="https://echo.fbi.h-da.de/" method="POST" accept-charset="UTF-8">
+        <form id="ware" action="https://eninrr065gg9.x.pipedream.net" method="POST" accept-charset="UTF-8">
             <select name="pizzen[]" size="7"  multiple tabindex="0"> 
                 <option value="margherita" selected>Margherita</option>
                 <option value="salami" selected>Salami</option>
