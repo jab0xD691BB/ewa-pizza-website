@@ -31,7 +31,7 @@ require_once './Page.php';
  * @author   Bernhard Kreling, <b.kreling@fbi.h-da.de> 
  * @author   Ralf Hahn, <ralf.hahn@h-da.de> 
  */
-class PageTemplate extends Page
+class Kunde extends Page
 {
     // to do: declare reference variables for members 
     // representing substructures/blocks
@@ -102,13 +102,14 @@ class PageTemplate extends Page
         // to do: call generateView() for all members
         // to do: output view of this page
         foreach ($this->pizzenObj as $key => $obj) {
-            $this->showBestellung($obj->getPizzaName(), $obj->getPizzaStatus());
+            $nameId = $obj->getPizzaName().(string)$obj->getId();
+            $this->showBestellung($obj->getPizzaName(),$nameId, $obj->getPizzaStatus());
         }
 
         $this->generatePageFooter();
     }
 
-    private function showBestellung($pName, $s)
+    private function showBestellung($pName, $inputName, $s)
     {
 
         echo <<<EOT
@@ -117,11 +118,11 @@ class PageTemplate extends Page
         <legend>$pName</legend>
         <div class="tr">
         EOT;
-        echo ("<label for='mar'>Bestellt</label> <input id='mar' type='radio' name='status$pName' " . (($s == "Bestellt") ?  "checked"   : "")  . " value='fertig'>");
-        echo ("<label for='mar'>Im Ofen</label> <input id='mar' type='radio' name='status$pName' " . (($s == "ImOfen") ?  "checked"   : "")  . " value='fertig'>");
-        echo ("<label for='mar'>Fertig</label> <input id='mar' type='radio' name='status$pName' " . (($s == "Fertig") ?  "checked"   : "")  . " value='fertig'>");
-        echo ("<label for='mar'>Unterwegs</label> <input id='mar' type='radio' name='status$pName' " . (($s == "Unterwegs") ?  "checked"   : "")  . " value='fertig'>");
-        echo ("<label for='mar'>Geliefert</label> <input id='mar' type='radio' name='status$pName' " . (($s == "Geliefert") ?  "checked"   : "")  . " value='fertig'> </fieldset> </div>");
+        echo ("<label for='mar'>Bestellt</label> <input id='mar' type='radio' name='status$inputName' " . (($s == "Bestellt") ?  "checked"   : "")  . " value='fertig'>");
+        echo ("<label for='mar'>Im Ofen</label> <input id='mar' type='radio' name='status$inputName' " . (($s == "ImOfen") ?  "checked"   : "")  . " value='fertig'>");
+        echo ("<label for='mar'>Fertig</label> <input id='mar' type='radio' name='status$inputName' " . (($s == "Fertig") ?  "checked"   : "")  . " value='fertig'>");
+        echo ("<label for='mar'>Unterwegs</label> <input id='mar' type='radio' name='status$inputName' " . (($s == "Unterwegs") ?  "checked"   : "")  . " value='fertig'>");
+        echo ("<label for='mar'>Geliefert</label> <input id='mar' type='radio' name='status$inputName' " . (($s == "Geliefert") ?  "checked"   : "")  . " value='fertig'> </fieldset> </div>");
     }
 
     /**
@@ -180,7 +181,7 @@ class PageTemplate extends Page
     public static function main()
     {
         try {
-            $page = new PageTemplate();
+            $page = new Kunde();
             $page->processReceivedData();
             $page->generateView();
         } catch (Exception $e) {
@@ -192,7 +193,7 @@ class PageTemplate extends Page
 
 // This call is starting the creation of the page. 
 // That is input is processed and output is created.
-PageTemplate::main();
+Kunde::main();
 
 // Zend standard does not like closing php-tag!
 // PHP doesn't require the closing tag (it is assumed when the file ends). 

@@ -31,7 +31,7 @@ require_once './Page.php';
  * @author   Bernhard Kreling, <b.kreling@fbi.h-da.de> 
  * @author   Ralf Hahn, <ralf.hahn@h-da.de> 
  */
-class PageTemplate extends Page
+class Bestellung extends Page
 {
 
     // to do: declare reference variables for members 
@@ -180,7 +180,7 @@ class PageTemplate extends Page
     public static function main() 
     {
         try {
-            $page = new PageTemplate();
+            $page = new Bestellung();
             $page->processReceivedData();
             $page->generateView();
         }
@@ -193,7 +193,7 @@ class PageTemplate extends Page
 
 // This call is starting the creation of the page. 
 // That is input is processed and output is created.
-PageTemplate::main();
+Bestellung::main();
 
 // Zend standard does not like closing php-tag!
 // PHP doesn't require the closing tag (it is assumed when the file ends). 
