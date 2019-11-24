@@ -35,6 +35,9 @@ class PageTemplate extends Page
 {
     // to do: declare reference variables for members 
     // representing substructures/blocks
+
+    private $bestellung = array();
+    private $bestellungInfo;
     
     /**
      * Instantiates members (to be defined above).   
@@ -70,8 +73,9 @@ class PageTemplate extends Page
     protected function getViewData()
     {
         // to do: fetch data for this view from the database
-
-        $sqlBestellung = "SELECT BestellungID, Adresse, PizzaID, PizzaName, Preis, Status FROM bestellung, bestelltepizza, angebot WHERE PizzaNummer = fPizzaNummer AND BestellungID = fBestellungID;";
+        $tmpArray;
+        //$sqlBestellung = "SELECT BestellungID, Adresse, PizzaID,PizzaNummer, PizzaName, Preis, Status FROM bestellung, bestelltepizza, angebot WHERE PizzaNummer = fPizzaNummer AND BestellungID = fBestellungID;";
+        $sqlBestellung = "SELECT BestellungID, Adresse FROM bestellung;";
         $recordSet = $this->_database->query($sqlBestellung);
         if(!$recordSet){
             throw new Exception("Query failed: ".$this->_database->error);
@@ -81,10 +85,28 @@ class PageTemplate extends Page
         while($record = $recordSet->fetch_assoc()){
            /* $this->pizzenObj [htmlspecialchars($record["PizzaID"])] = new Pizza(htmlspecialchars($record["PizzaID"]), 
             htmlspecialchars($record["PizzaName"]), htmlspecialchars($record["Preis"]), htmlspecialchars($record["Status"]));*/
-
-            echo ($record["BestellungID"] ." - ". $record["Adresse"] );
-
+            $beObj = new Bestellung($record["BestellungID"], $record["Adresse"]);
+            $this->bestellung[$record["BestellungID"]] = $beObj;            
+         
         }
+
+        foreach($this->bestellung as $key => $obj){
+            $sqlBestellung = "SELECT PizzaID,PizzaNummer, PizzaName, Preis, Status FROM bestellung, bestelltepizza, angebot WHERE PizzaNummer = fPizzaNummer AND BestellungID = fBestellungID AND BestellungID = $key;";
+            $recordSet = $this->_database->query($sqlBestellung);
+            $pizzen = array();
+            if(!$recordSet){
+                throw new Exception("Query failed: ".$this->_database->error);
+            }
+            
+            $anzahlRecords = $recordSet->num_rows;
+            while($record = $recordSet->fetch_assoc()){
+                $pizzen[] = new Pizza($record["PizzaNummer"],$record["PizzaName"],$record["Preis"],$record["Status"]);
+            }
+
+            $obj->addPizzaPreis($pizzen);
+        }
+       
+
         $recordSet->free();
     }
     
@@ -103,6 +125,25 @@ class PageTemplate extends Page
         $this->generatePageHeader('to do: change headline');
         // to do: call generateView() for all members
         // to do: output view of this page
+        echo ("<section id=\"fahrerbereich\">");
+        foreach($this->bestellung as $bID => $bObj){
+            echo <<<EOT
+            <div id="$bID">
+            <p>$bID, $bObj->adresse, $bObj->preis </p>
+            <p>$bObj->pizzaToString</p>
+            <span>fertig</span>
+            <span>unterwegs</span>
+            <span>geliefert</span>
+            <br>        
+            <span><input type="radio" name="status" value="fertig" checked></span>
+            <span><input type="radio" name="status" value="unterwegs"></span>
+            <span><input type="radio" name="status" value="geliefert"></span>
+            </div>
+            EOT;
+            
+
+        }
+        echo ("</section>");
         $this->generatePageFooter();
     }
     
@@ -157,3 +198,34 @@ PageTemplate::main();
 // like additional whitespace which will cause session 
 // initialization to fail ("headers already sent"). 
 //? >
+
+class Bestellung{
+
+    public $bestellId;
+    public $adresse;
+    public $pi;
+    public $preis;
+    public $pizzaToString;
+
+    function __construct($b, $a)
+    {
+        $this->bestellId = $b;
+        $this->adresse = $a;
+        
+    }
+
+    function addPizzaPreis($p){
+        $this->pi = $p;
+        for($i = 0; $i < count($p); $i++){
+            $this->pizzaToString .= $p[$i]->getPizzaName() .", ";
+            $this->preis += $p[$i]->getPizzaPreis();
+        }
+
+        $this->pizzaToString = substr($this->pizzaToString, 0, -2);
+    }
+
+
+
+}
+
+?>
