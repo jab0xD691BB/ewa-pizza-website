@@ -1,4 +1,4 @@
-<?php    // UTF-8 marker äöüÄÖÜß€
+<?php	// UTF-8 marker äöüÄÖÜß€
 /**
  * Class PageTemplate for the exercises of the EWA lecture
  * Demonstrates use of PHP including class and OO.
@@ -31,13 +31,11 @@ require_once './Page.php';
  * @author   Bernhard Kreling, <b.kreling@fbi.h-da.de> 
  * @author   Ralf Hahn, <ralf.hahn@h-da.de> 
  */
-class Kunde extends Page
+class PageTemplate extends Page
 {
     // to do: declare reference variables for members 
     // representing substructures/blocks
-    private $pizzen = array();
-    private $bestellId = array();
-
+    
     /**
      * Instantiates members (to be defined above).   
      * Calls the constructor of the parent i.e. page class.
@@ -45,12 +43,12 @@ class Kunde extends Page
      *
      * @return none
      */
-    protected function __construct()
+    protected function __construct() 
     {
         parent::__construct();
         // to do: instantiate members representing substructures/blocks
     }
-
+    
     /**
      * Cleans up what ever is needed.   
      * Calls the destructor of the parent i.e. page class.
@@ -58,7 +56,7 @@ class Kunde extends Page
      *
      * @return none
      */
-    protected function __destruct()
+    protected function __destruct() 
     {
         parent::__destruct();
     }
@@ -72,20 +70,24 @@ class Kunde extends Page
     protected function getViewData()
     {
         // to do: fetch data for this view from the database
-        $sqlAbfrage = "SELECT PizzaID, PizzaName, Preis, Status FROM bestelltepizza, angebot WHERE PizzaNummer = fPizzaNummer;";
-        $recordSet = $this->_database->query($sqlAbfrage);
+
+        $sqlBestellung = "SELECT BestellungID, Adresse, PizzaID, PizzaName, Preis, Status FROM bestellung, bestelltepizza, angebot WHERE PizzaNummer = fPizzaNummer AND BestellungID = fBestellungID;";
+        $recordSet = $this->_database->query($sqlBestellung);
         if(!$recordSet){
             throw new Exception("Query failed: ".$this->_database->error);
         }
         
         $anzahlRecords = $recordSet->num_rows;
         while($record = $recordSet->fetch_assoc()){
-            $this->pizzenObj [htmlspecialchars($record["PizzaID"])] = new Pizza(htmlspecialchars($record["PizzaID"]), 
-            htmlspecialchars($record["PizzaName"]), htmlspecialchars($record["Preis"]), htmlspecialchars($record["Status"]));
+           /* $this->pizzenObj [htmlspecialchars($record["PizzaID"])] = new Pizza(htmlspecialchars($record["PizzaID"]), 
+            htmlspecialchars($record["PizzaName"]), htmlspecialchars($record["Preis"]), htmlspecialchars($record["Status"]));*/
+
+            echo ($record["BestellungID"] ." - ". $record["Adresse"] );
+
         }
         $recordSet->free();
     }
-
+    
     /**
      * First the necessary data is fetched and then the HTML is 
      * assembled for output. i.e. the header is generated, the content
@@ -95,75 +97,28 @@ class Kunde extends Page
      *
      * @return none
      */
-    protected function generateView()
+    protected function generateView() 
     {
         $this->getViewData();
         $this->generatePageHeader('to do: change headline');
         // to do: call generateView() for all members
         // to do: output view of this page
-        foreach ($this->pizzenObj as $key => $obj) {
-            $nameId = $obj->getPizzaName().(string)$obj->getId();
-            $this->showBestellung($obj->getPizzaName(),$nameId, $obj->getPizzaStatus());
-        }
-
         $this->generatePageFooter();
     }
-
-    private function showBestellung($pName, $inputName, $s)
-    {
-
-        echo <<<EOT
-        <div class="table">
-        <fieldset>
-        <legend>$pName</legend>
-        <div class="tr">
-        EOT;
-        echo ("<label for='mar'>Bestellt</label> <input id='mar' type='radio' name='status$inputName' " . (($s == "Bestellt") ?  "checked"   : "")  . " value='fertig'>");
-        echo ("<label for='mar'>Im Ofen</label> <input id='mar' type='radio' name='status$inputName' " . (($s == "ImOfen") ?  "checked"   : "")  . " value='fertig'>");
-        echo ("<label for='mar'>Fertig</label> <input id='mar' type='radio' name='status$inputName' " . (($s == "Fertig") ?  "checked"   : "")  . " value='fertig'>");
-        echo ("<label for='mar'>Unterwegs</label> <input id='mar' type='radio' name='status$inputName' " . (($s == "Unterwegs") ?  "checked"   : "")  . " value='fertig'>");
-        echo ("<label for='mar'>Geliefert</label> <input id='mar' type='radio' name='status$inputName' " . (($s == "Geliefert") ?  "checked"   : "")  . " value='fertig'> </fieldset> </div>");
-    }
-
+    
     /**
      * Processes the data that comes via GET or POST i.e. CGI.
      * If this page is supposed to do something with submitted
      * data do it here. 
      * If the page contains blocks, delegate processing of the 
-     * respective subsets of data to them.
+	 * respective subsets of data to them.
      *
      * @return none 
      */
-    protected function processReceivedData()
+    protected function processReceivedData() 
     {
         parent::processReceivedData();
         // to do: call processReceivedData() for all members
-
-        if (isset($_POST["pizzen"]) && isset($_POST["adresse"])) {
-            $this->pizzen = $_POST["pizzen"];
-            $adresse = htmlspecialchars($_POST["adresse"]);
-
-            $sqlInsertBestellung = "INSERT INTO bestellung (BestellungID, Adresse, Bestellzeitpunkt) values (DEFAULT, '$adresse', DEFAULT);";
-            $this->_database->query($sqlInsertBestellung);
-            $fBestellungId = $this->_database->insert_id;
-
-            for ($i = 0; $i < count($this->pizzen); $i++) {
-                $sqlAbfrage = "Select PizzaNummer from angebot where PizzaName ='" . $this->pizzen[$i] . "';";
-                $recordSet = $this->_database->query($sqlAbfrage);
-                if (!$recordSet) {
-                    throw new Exception("Query failed: " . $this->_database->error);
-                }
-                
-                $recordId = $recordSet->fetch_assoc();
-                $sqlInsertBesPizza = "INSERT INTO bestelltepizza(PizzaID, fBestellungID, fPizzaNummer, Status) VALUES (DEFAULT, $fBestellungId , ".$recordId["PizzaNummer"].", 'Bestellt');";
-                $this->_database->query($sqlInsertBesPizza);
-
-                 
-            }
-
-
-            $recordSet->free();
-        }
     }
 
     /**
@@ -177,14 +132,15 @@ class Kunde extends Page
      * call it without first creating an instance of the class.
      *
      * @return none 
-     */
-    public static function main()
+     */    
+    public static function main() 
     {
         try {
-            $page = new Kunde();
+            $page = new PageTemplate();
             $page->processReceivedData();
             $page->generateView();
-        } catch (Exception $e) {
+        }
+        catch (Exception $e) {
             header("Content-type: text/plain; charset=UTF-8");
             echo $e->getMessage();
         }
@@ -193,7 +149,7 @@ class Kunde extends Page
 
 // This call is starting the creation of the page. 
 // That is input is processed and output is created.
-Kunde::main();
+PageTemplate::main();
 
 // Zend standard does not like closing php-tag!
 // PHP doesn't require the closing tag (it is assumed when the file ends). 
