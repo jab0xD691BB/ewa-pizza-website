@@ -31,13 +31,10 @@ require_once './Page.php';
  * @author   Bernhard Kreling, <b.kreling@fbi.h-da.de> 
  * @author   Ralf Hahn, <ralf.hahn@h-da.de> 
  */
-class PageTemplate extends Page
+class Bäcker extends Page
 {
     // to do: declare reference variables for members 
     // representing substructures/blocks
-
-    private $bestellung = array();
-    private $bestellungInfo;
     
     /**
      * Instantiates members (to be defined above).   
@@ -73,9 +70,10 @@ class PageTemplate extends Page
     protected function getViewData()
     {
         // to do: fetch data for this view from the database
+        // to do: fetch data for this view from the database
         $tmpArray;
         //$sqlBestellung = "SELECT BestellungID, Adresse, PizzaID,PizzaNummer, PizzaName, Preis, Status FROM bestellung, bestelltepizza, angebot WHERE PizzaNummer = fPizzaNummer AND BestellungID = fBestellungID;";
-        $sqlBestellung = "SELECT BestellungID, Adresse , Status FROM bestellung, bestelltepizza where BestellungID =fBestellungID;";
+        $sqlBestellung = "SELECT BestellungID, Adresse, Status FROM bestellung, bestelltepizza where BestellungID=fBestellungID;";
         $recordSet = $this->_database->query($sqlBestellung);
         if(!$recordSet){
             throw new Exception("Query failed: ".$this->_database->error);
@@ -125,30 +123,43 @@ class PageTemplate extends Page
         $this->generatePageHeader('to do: change headline');
         // to do: call generateView() for all members
         // to do: output view of this page
-        echo ("<section id=\"fahrerbereich\">");
+        echo <<<EOT
+        <section id="bestellBereich">
+        <form action="bäckerTemp.php" method="POST" id="test1">
+        EOT;
         foreach($this->bestellung as $bID => $bObj){
-            echo ("<form action='fahrerTemp.php' method='POST' id='test1'>");
-            echo <<<EOT
-            <div id="$bID">
-            <p>$bID, $bObj->adresse, $bObj->preis </p>
-            <p>$bObj->pizzaToString</p>
-            <span>fertig</span>
-            <span>unterwegs</span>
-            <span>geliefert</span>
-            <br>
-            EOT;
-            echo "<span><input type='radio' name='$bID' value='fertig' ". ($bObj->bestellStatus == "fertig" ? "checked" : "") ."></span>";
-            echo "<span><input type='radio' name='$bID' value='unterwegs' ". ($bObj->bestellStatus == "unterwegs" ? "checked" : "") ."></span>";
-            echo "<span><input type='radio' name='$bID' value='geliefert'". ($bObj->bestellStatus == "geliefert" ? "checked" : "") ."></span>";
-            echo <<<EOT
-            </div>
-            <input type="submit" name="result">
-            </form>
-            EOT;
-            
-
+            $pizzArr = $bObj->pi;
+            for($i=0; $i < count($pizzArr); $i++){
+                echo <<<EOT
+                <div class="table">
+                <div class="tr">
+                <div class="th"></div>               
+                <div class="th">bestellt</div>
+                <div class="th">im Ofen</div>
+                <div class="th">fertig</div>
+                </div>
+                <div class="th">{$pizzArr[$i]->getPizzaName()}</div>
+                EOT;
+                echo "<div class='td'>";
+                echo "<input type='radio' name='".$pizzArr[$i]->getId() ."' value='bestellt' ". (($pizzArr[$i]->getPizzaStatus() == "bestellt") ? "checked": "") ." > ";
+                echo "</div>";
+                echo "<div class='td'>";
+                echo "<input type='radio' name='".$pizzArr[$i]->getId()."' value='imOfen' ". (($pizzArr[$i]->getPizzaStatus() == "imOfen") ? "checked": "") ." > ";
+                echo "</div>";
+                echo "<div class='td'>";
+                echo "<input type='radio' name='".$pizzArr[$i]->getId()."' value='fertig'". (($pizzArr[$i]->getPizzaStatus() == "fertig") ? "checked": "") ." > ";
+                echo <<<EOT
+                </div>
+                </div>
+                EOT;
+            }
         }
-        echo ("</section>");
+        //{$pizzaArr[$i]->getPizzaStatus() == "Bestellt" ? "checked" : "" }
+        echo <<<EOT
+        <input type="submit" name="result">
+        </form>
+        </section>
+        EOT;
         $this->generatePageFooter();
     }
     
@@ -176,7 +187,7 @@ class PageTemplate extends Page
                 $pizzaID = $param_name;
                 $pizzaStatus = $param_val;
                 
-                $sqlInsertBestellung = "UPDATE bestelltepizza set Status = '$pizzaStatus' where fBestellungID = $pizzaID;";
+                $sqlInsertBestellung = "UPDATE bestelltepizza set Status = '$pizzaStatus' where PizzaID = $pizzaID;";
                 $this->_database->query($sqlInsertBestellung);
 
             }
@@ -198,7 +209,7 @@ class PageTemplate extends Page
     public static function main() 
     {
         try {
-            $page = new PageTemplate();
+            $page = new Bäcker();
             $page->processReceivedData();
             $page->generateView();
         }
@@ -211,7 +222,7 @@ class PageTemplate extends Page
 
 // This call is starting the creation of the page. 
 // That is input is processed and output is created.
-PageTemplate::main();
+Bäcker::main();
 
 // Zend standard does not like closing php-tag!
 // PHP doesn't require the closing tag (it is assumed when the file ends). 
@@ -219,7 +230,3 @@ PageTemplate::main();
 // like additional whitespace which will cause session 
 // initialization to fail ("headers already sent"). 
 //? >
-
-
-
-?>

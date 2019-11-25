@@ -16,6 +16,7 @@
  * @link     http://www.fbi.h-da.de 
  */
 require_once './Pizza.php';
+require_once './BestellungObj.php';
 
 /**
  * This abstract class is a common base class for all 
@@ -89,6 +90,7 @@ abstract class Page
     {
         $headline = htmlspecialchars($headline);
         header("Content-type: text/html; charset=UTF-8");
+        //header('Refresh: 5; url=fahrerTemp.php');
 
         echo <<<EOT
         <!DOCTYPE html>

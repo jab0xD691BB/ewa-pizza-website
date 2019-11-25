@@ -118,11 +118,11 @@ class Kunde extends Page
         <legend>$pName</legend>
         <div class="tr">
         EOT;
-        echo ("<label for='mar'>Bestellt</label> <input id='mar' type='radio' name='status$inputName' " . (($s == "Bestellt") ?  "checked"   : "")  . " value='fertig'>");
-        echo ("<label for='mar'>Im Ofen</label> <input id='mar' type='radio' name='status$inputName' " . (($s == "ImOfen") ?  "checked"   : "")  . " value='fertig'>");
-        echo ("<label for='mar'>Fertig</label> <input id='mar' type='radio' name='status$inputName' " . (($s == "Fertig") ?  "checked"   : "")  . " value='fertig'>");
-        echo ("<label for='mar'>Unterwegs</label> <input id='mar' type='radio' name='status$inputName' " . (($s == "Unterwegs") ?  "checked"   : "")  . " value='fertig'>");
-        echo ("<label for='mar'>Geliefert</label> <input id='mar' type='radio' name='status$inputName' " . (($s == "Geliefert") ?  "checked"   : "")  . " value='fertig'> </fieldset> </div>");
+        echo ("<label for='mar'>Bestellt</label> <input id='mar' type='radio' name='status$inputName' " . (($s == "bestellt") ?  "checked"   : "")  . " value='fertig'>");
+        echo ("<label for='mar'>Im Ofen</label> <input id='mar' type='radio' name='status$inputName' " . (($s == "imOfen") ?  "checked"   : "")  . " value='fertig'>");
+        echo ("<label for='mar'>Fertig</label> <input id='mar' type='radio' name='status$inputName' " . (($s == "fertig") ?  "checked"   : "")  . " value='fertig'>");
+        echo ("<label for='mar'>Unterwegs</label> <input id='mar' type='radio' name='status$inputName' " . (($s == "unterwegs") ?  "checked"   : "")  . " value='fertig'>");
+        echo ("<label for='mar'>Geliefert</label> <input id='mar' type='radio' name='status$inputName' " . (($s == "geliefert") ?  "checked"   : "")  . " value='fertig'> </fieldset> </div>");
     }
 
     /**
