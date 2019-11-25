@@ -42,6 +42,7 @@ abstract class Page
     protected $_database = null;
     //protected $pizzen = [];
     protected $pizzenObj = [];
+    protected $bestellung;
 
     
     // --- OPERATIONS ---

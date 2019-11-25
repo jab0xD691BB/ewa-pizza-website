@@ -31,7 +31,7 @@ require_once './Page.php';
  * @author   Bernhard Kreling, <b.kreling@fbi.h-da.de> 
  * @author   Ralf Hahn, <ralf.hahn@h-da.de> 
  */
-class Bäcker extends Page
+class Baecker extends Page
 {
     // to do: declare reference variables for members 
     // representing substructures/blocks
@@ -83,13 +83,13 @@ class Bäcker extends Page
         while($record = $recordSet->fetch_assoc()){
            /* $this->pizzenObj [htmlspecialchars($record["PizzaID"])] = new Pizza(htmlspecialchars($record["PizzaID"]), 
             htmlspecialchars($record["PizzaName"]), htmlspecialchars($record["Preis"]), htmlspecialchars($record["Status"]));*/
-            $beObj = new Bestellung($record["BestellungID"], $record["Adresse"], $record["Status"]);
+            $beObj = new BestellungObj($record["BestellungID"], $record["Adresse"], $record["Status"]);
             $this->bestellung[$record["BestellungID"]] = $beObj;            
          
         }
         $recordSet->free();
         foreach($this->bestellung as $key => $obj){
-            $sqlBestellung = "SELECT PizzaID,PizzaNummer, PizzaName, Preis, Status FROM bestellung, bestelltepizza, angebot WHERE PizzaNummer = fPizzaNummer AND BestellungID = fBestellungID AND BestellungID = $key;";
+            $sqlBestellung = "SELECT PizzaID,PizzaNummer, PizzaName, Preis, Status FROM bestellung, bestelltepizza, angebot WHERE PizzaNummer = fPizzaNummer AND BestellungID = fBestellungID AND BestellungID = $key AND Status != 'fertig' or 'unterwegs' or 'geliefert';";
             $recordSet = $this->_database->query($sqlBestellung);
             $pizzen = array();
             if(!$recordSet){
@@ -209,7 +209,7 @@ class Bäcker extends Page
     public static function main() 
     {
         try {
-            $page = new Bäcker();
+            $page = new Baecker();
             $page->processReceivedData();
             $page->generateView();
         }
@@ -222,7 +222,7 @@ class Bäcker extends Page
 
 // This call is starting the creation of the page. 
 // That is input is processed and output is created.
-Bäcker::main();
+Baecker::main();
 
 // Zend standard does not like closing php-tag!
 // PHP doesn't require the closing tag (it is assumed when the file ends). 

@@ -1,4 +1,6 @@
 <?php    // UTF-8 marker äöüÄÖÜß€
+session_start();
+
 /**
  * Class PageTemplate for the exercises of the EWA lecture
  * Demonstrates use of PHP including class and OO.
@@ -72,7 +74,16 @@ class Kunde extends Page
     protected function getViewData()
     {
         // to do: fetch data for this view from the database
-        $sqlAbfrage = "SELECT PizzaID, PizzaName, Preis, Status FROM bestelltepizza, angebot WHERE PizzaNummer = fPizzaNummer;";
+
+        if (isset($_SESSION['LastAccess']) && time()-$_SESSION['LastAccess']< 60) {
+            $bID = $_SESSION["bID"];
+            $_SESSION['LastAccess'] = time(); // Inaktivitätsdauer = 0
+        
+        
+
+
+         
+        $sqlAbfrage = "SELECT PizzaID, PizzaName, Preis, Status FROM bestelltepizza, angebot WHERE fBestellungID = ". $_SESSION["bID"] ." AND PizzaNummer = fPizzaNummer;";
         $recordSet = $this->_database->query($sqlAbfrage);
         if(!$recordSet){
             throw new Exception("Query failed: ".$this->_database->error);
@@ -84,6 +95,7 @@ class Kunde extends Page
             htmlspecialchars($record["PizzaName"]), htmlspecialchars($record["Preis"]), htmlspecialchars($record["Status"]));
         }
         $recordSet->free();
+    }
     }
 
     /**
@@ -147,6 +159,14 @@ class Kunde extends Page
             $this->_database->query($sqlInsertBestellung);
             $fBestellungId = $this->_database->insert_id;
 
+            if(isset($_POST['adresse'])) {
+                $_SESSION['bID'] = $fBestellungId;
+                $_SESSION['LastAccess'] = time();
+            }
+
+
+
+            
             for ($i = 0; $i < count($this->pizzen); $i++) {
                 $sqlAbfrage = "Select PizzaNummer from angebot where PizzaName ='" . $this->pizzen[$i] . "';";
                 $recordSet = $this->_database->query($sqlAbfrage);
@@ -155,7 +175,7 @@ class Kunde extends Page
                 }
                 
                 $recordId = $recordSet->fetch_assoc();
-                $sqlInsertBesPizza = "INSERT INTO bestelltepizza(PizzaID, fBestellungID, fPizzaNummer, Status) VALUES (DEFAULT, $fBestellungId , ".$recordId["PizzaNummer"].", 'Bestellt');";
+                $sqlInsertBesPizza = "INSERT INTO bestelltepizza(PizzaID, fBestellungID, fPizzaNummer, Status) VALUES (DEFAULT, $fBestellungId , ".$recordId["PizzaNummer"].", 'bestellt');";
                 $this->_database->query($sqlInsertBesPizza);
 
                  

@@ -1,6 +1,6 @@
 <?php
 
-class Bestellung{
+class BestellungObj{
 
 public $bestellId;
 public $adresse;
@@ -28,13 +28,18 @@ function addPizzaPreis($p){
 }
 
 function allePizzenFertig(){
+    $counter = 0;
     for($i = 0; $i < count($this->pi); $i++){
-        if($this->pi[$i]->getPizzaStatus() != "fertig"){
-            $this->bestellStatus = "";
+        if($this->pi[$i]->getPizzaStatus() == "fertig"){
+            $counter++;
         }
     }
 
-    $bestellStatus = "fertig";
+    if($counter == count($this->pi)){
+        $this->bestellStatus = "fertig";
+    }
+       
+    
 }
 
 }
