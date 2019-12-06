@@ -123,6 +123,7 @@ class Baecker extends Page
         $this->generatePageHeader('to do: change headline');
         // to do: call generateView() for all members
         // to do: output view of this page
+        echo  "<h1>Baecker</h1>";
         echo <<<EOT
         <section id="bestellBereich">
         <form action="bäckerTemp.php" method="POST" id="test1">

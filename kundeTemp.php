@@ -79,9 +79,6 @@ class Kunde extends Page
             $bID = $_SESSION["bID"];
             $_SESSION['LastAccess'] = time(); // Inaktivitätsdauer = 0
         
-        
-
-
          
         $sqlAbfrage = "SELECT PizzaID, PizzaName, Preis, Status FROM bestelltepizza, angebot WHERE fBestellungID = ". $_SESSION["bID"] ." AND PizzaNummer = fPizzaNummer;";
         $recordSet = $this->_database->query($sqlAbfrage);
@@ -113,6 +110,11 @@ class Kunde extends Page
         $this->generatePageHeader('to do: change headline');
         // to do: call generateView() for all members
         // to do: output view of this page
+        echo <<<EOT
+        <h1>
+           Ihre Bestellung
+        </h1>
+        EOT;
         foreach ($this->pizzenObj as $key => $obj) {
             $nameId = $obj->getPizzaName().(string)$obj->getId();
             $this->showBestellung($obj->getPizzaName(),$nameId, $obj->getPizzaStatus());
@@ -124,6 +126,7 @@ class Kunde extends Page
     private function showBestellung($pName, $inputName, $s)
     {
 
+        
         echo <<<EOT
         <div class="table">
         <fieldset>
