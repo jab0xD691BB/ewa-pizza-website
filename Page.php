@@ -91,7 +91,7 @@ abstract class Page
     {
         $headline = htmlspecialchars($headline);
         header("Content-type: text/html; charset=UTF-8");
-        //header('Refresh: 5; url=fahrerTemp.php');
+        //header('Refresh: 5; url=baeckerTemp.php');
 
         echo <<<EOT
         <!DOCTYPE html>

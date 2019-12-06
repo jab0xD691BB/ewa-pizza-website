@@ -126,7 +126,7 @@ class Baecker extends Page
         echo  "<h1>Baecker</h1>";
         echo <<<EOT
         <section id="bestellBereich">
-        <form action="bäckerTemp.php" method="POST" id="test1">
+        <form action="baeckerTemp.php" method="POST" id="test1">
         EOT;
         foreach($this->bestellung as $bID => $bObj){
             $pizzArr = $bObj->pi;
