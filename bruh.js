@@ -1,23 +1,21 @@
-var preis = 0.00;
-var piz = null;
-var select = document.getElementsByTagName("select")[0];
-var preisText = document.getElementById("pPreis").firstChild.nodeValue;
+var preis = 0.00
+var piz = null
+var inputAdresse = document.getElementById('inputAdr')
 
-class Pizzen{
-    constructor(){
-        this.pizzen = new Array();
+class Pizzen {
+    constructor() {
+        this.pizzen = new Array()
     }
 
-    addPizza(p, pr){
-        this.pizzen[p] = pr;
+    addPizza(p, pr) {
+        this.pizzen[p] = pr
     }
 
-    getPreis(p){
-        return this.pizzen[p];
+    getPreis(p) {
+        return this.pizzen[p]
     }
 }
 
-//init wird vom body aufgerufen, pizza objekte werden angelegt
 
 function init() {
     "use strict";
@@ -27,25 +25,23 @@ function init() {
         imgPizza[i].addEventListener("click", pizzaClick);
     }
 
-    var inputAdresse = document.getElementById("inputAdr");
-
     inputAdresse.addEventListener("change", checkBeforeSubmit);
 
 
     piz = new Pizzen();
-    var divs = document.getElementsByTagName("section")[0].getElementsByTagName("div");
-    for(var i = 0; i < divs.length; i++){
+    var divs = document.getElementsByTagName("section")[0].
+        getElementsByTagName("div");
+    for (let i = 0; i < divs.length; i++) {
         var pPreis = divs[i].getElementsByTagName("p")[0];
         var pname = pPreis.id;
         var preis = pPreis.getAttribute("data-preis");
         piz.addPizza(pname, preis);
     }
-
-    
 }
 
 function pizzaClick() {
     "use strict";
+    let select = document.getElementsByTagName("select")[0];
 
     switch (event.target.id) {
         case "imgMargherita":
@@ -59,10 +55,12 @@ function pizzaClick() {
         case "imgHawaii":
             select.appendChild(newOption("Hawaii"));
             preis += parseFloat(piz.getPreis("Hawaii"));
+
             break;
         case "imgFunghi":
             select.appendChild(newOption("Funghi"));
             preis += parseFloat(piz.getPreis("Funghi"));
+
             break;
         case "imgProsciutto":
             select.appendChild(newOption("Prosciutto"));
@@ -70,8 +68,10 @@ function pizzaClick() {
             break;
     }
 
-    
-    preisText = preis.toFixed(2) + "€";
+
+    let divPreis = document.getElementById("pPreis");
+    divPreis.firstChild.nodeValue = preis.toFixed(2) + "€";
+    checkBeforeSubmit();
 
 }
 
@@ -89,21 +89,25 @@ function newOption(pName) {
 function deleteAll() {
     "use strict";
 
-    let selectedOpt = select[0].getElementsByTagName("option");
+    let selectedOpt = document.getElementsByTagName("select")[0]
+        .getElementsByTagName("option");
 
     while (selectedOpt.length != 0) {
         selectedOpt[0].remove()
     }
 
-    preisText = "";
+    document.getElementById("pPreis").firstChild.nodeValue = "";
     preis = 0;
+    checkBeforeSubmit();
+
 }
 
 function deleteFew() {
     "use strict";
 
-    let selectedOpt = select[0].getElementsByTagName("option");
-    let divPreis = document.getElementById("pPreis");
+    let selectedOpt = document.getElementsByTagName("select")[0].
+        getElementsByTagName("option");
+
 
     for (var i = 0; i < selectedOpt.length; i++) {
         if (selectedOpt[i].selected) {
@@ -114,19 +118,25 @@ function deleteFew() {
         }
     }
 
-    if(preis >= 0){
-        preisText = preis.toFixed(2) + "€";
+    if (preis >= 0) {
+        document.getElementById("pPreis").firstChild.nodeValue = preis.toFixed(2) + "€";
         preis = 0;
-    }else{
-        preisText = "";
+    } else {
+        document.getElementById("pPreis").firstChild.nodeValue = "";
     }
-    
+    checkBeforeSubmit();
+
 }
 
-function checkBeforeSubmit(){
+
+
+
+function checkBeforeSubmit() {
     let text = inputAdresse.value;
-    if(text.length > 1 && select.getElementsByTagName("option") > 0){
+    if (text.length > 1 && document.getElementsByTagName("select")[0].getElementsByTagName("option").length > 0) {
         document.getElementById("bestellButton").disabled = false;
+    } else {
+        document.getElementById("bestellButton").disabled = true;
     }
 }
 

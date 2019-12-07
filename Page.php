@@ -104,10 +104,6 @@ abstract class Page
         </head>
         
         <body onload=init()>
-        <script src="myjs.js"></script>
-        <noscript>
-        <p>Bitte aktivieren Sie JavaScript!</p>
-        </noscript>
         EOT;
 
         
@@ -124,6 +120,10 @@ abstract class Page
     {
         // to do: output common end of HTML code
         echo <<<EOT
+        <script src="bruh.js"></script>
+        <noscript>
+        <p>Bitte aktivieren Sie JavaScript!</p>
+        </noscript>
         </body>
         </html>
         EOT;
