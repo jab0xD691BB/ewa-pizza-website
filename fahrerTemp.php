@@ -74,7 +74,7 @@ class PageTemplate extends Page
         // to do: fetch data for this view from the database
         $tmpArray;
         //$sqlBestellung = "SELECT BestellungID, Adresse, PizzaID,PizzaNummer, PizzaName, Preis, Status FROM bestellung, bestelltepizza, angebot WHERE PizzaNummer = fPizzaNummer AND BestellungID = fBestellungID;";
-        $sqlBestellung = "SELECT BestellungID, Adresse , Status FROM bestellung, bestelltepizza where BestellungID =fBestellungID;";
+        $sqlBestellung = "SELECT BestellungID, Adresse , Status FROM bestellung, bestelltepizza where BestellungID =fBestellungID  AND Status != 'geliefert';";
         $recordSet = $this->_database->query($sqlBestellung);
         if(!$recordSet){
             throw new Exception("Query failed: ".$this->_database->error);
@@ -89,6 +89,7 @@ class PageTemplate extends Page
          
         }
         $recordSet->free();
+        if($this->bestellung != null){
         foreach($this->bestellung as $key => $obj){
             $sqlBestellung = "SELECT PizzaID,PizzaNummer, PizzaName, Preis, Status FROM bestellung, bestelltepizza, angebot WHERE PizzaNummer = fPizzaNummer AND BestellungID = fBestellungID AND BestellungID = $key;";
             $recordSet = $this->_database->query($sqlBestellung);
@@ -109,6 +110,7 @@ class PageTemplate extends Page
 
         $recordSet->free();
     }
+    }
     
     /**
      * First the necessary data is fetched and then the HTML is 
@@ -127,6 +129,7 @@ class PageTemplate extends Page
         // to do: output view of this page
         echo "<h1>Fahrer</h1>";
         echo ("<section id=\"fahrerbereich\">");
+        if($this->bestellung != null){
         foreach($this->bestellung as $bID => $bObj){
             echo ("<form action='fahrerTemp.php' method='POST' id='test1'>");
             echo <<<EOT
@@ -150,6 +153,9 @@ class PageTemplate extends Page
 
         }
         echo ("</section>");
+    }else{
+        echo ("Keine Lieferungen.");
+    }
         $this->generatePageFooter();
     }
     

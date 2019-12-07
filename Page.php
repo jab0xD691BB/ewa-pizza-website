@@ -103,7 +103,11 @@ abstract class Page
             <title>$headline</title>
         </head>
         
-        <body>
+        <body onload=init()>
+        <script src="myjs.js"></script>
+        <noscript>
+        <p>Bitte aktivieren Sie JavaScript!</p>
+        </noscript>
         EOT;
 
         

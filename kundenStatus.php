@@ -1,6 +1,6 @@
 <?php    // UTF-8 marker äöüÄÖÜß€
 session_start();
-
+$bID = session_id();
 /**
  * Class PageTemplate for the exercises of the EWA lecture
  * Demonstrates use of PHP including class and OO.
@@ -33,12 +33,12 @@ require_once './Page.php';
  * @author   Bernhard Kreling, <b.kreling@fbi.h-da.de> 
  * @author   Ralf Hahn, <ralf.hahn@h-da.de> 
  */
-class Kunde extends Page
+class KundenStatus extends Page
 {
     // to do: declare reference variables for members 
     // representing substructures/blocks
-    private $pizzen = array();
-    private $bestellId = array();
+    private $serializedData;
+    private $jsonPizza = array();
 
     /**
      * Instantiates members (to be defined above).   
@@ -75,7 +75,7 @@ class Kunde extends Page
     {
         // to do: fetch data for this view from the database
 
-        if (isset($_SESSION['LastAccess']) && time() - $_SESSION['LastAccess'] < 60) {
+        if (isset($_SESSION['bID'])) {
             $bID = $_SESSION["bID"];
             $_SESSION['LastAccess'] = time(); // Inaktivitätsdauer = 0
 
@@ -88,12 +88,15 @@ class Kunde extends Page
 
             $anzahlRecords = $recordSet->num_rows;
             while ($record = $recordSet->fetch_assoc()) {
-                $this->pizzenObj[htmlspecialchars($record["PizzaID"])] = new Pizza(
-                    htmlspecialchars($record["PizzaID"]),
-                    htmlspecialchars($record["PizzaName"]),
-                    htmlspecialchars($record["Preis"]),
-                    htmlspecialchars($record["Status"])
-                );
+                $forJson = array();
+
+                $forJson[] = htmlspecialchars($record["PizzaID"]);
+                $forJson[] = htmlspecialchars($record["PizzaName"]);
+                $forJson[] = htmlspecialchars($record["Preis"]);
+                $forJson[] =  htmlspecialchars($record["Status"]);
+                
+                $this->jsonPizza[] = $forJson;
+                
             }
             $recordSet->free();
         }
@@ -111,37 +114,15 @@ class Kunde extends Page
     protected function generateView()
     {
         $this->getViewData();
-        $this->generatePageHeader('to do: change headline');
-        // to do: call generateView() for all members
-        // to do: output view of this page
-        echo <<<EOT
-        <h1>
-           Ihre Bestellung
-        </h1>
-        EOT;
-        foreach ($this->pizzenObj as $key => $obj) {
-            $nameId = $obj->getPizzaName() . (string) $obj->getId();
-            $this->showBestellung($obj->getPizzaName(), $nameId, $obj->getPizzaStatus());
-        }
+        //$this->generatePageHeader('KundenStatus');
 
-        $this->generatePageFooter();
-    }
+        //keine HTML Seite, deswegen generatePageHeader/-footer auskommentiert
 
-    private function showBestellung($pName, $inputName, $s)
-    {
+        $this->serializedData = json_encode($this->jsonPizza);
+        echo $this->serializedData;
 
-
-        echo <<<EOT
-        <div class="table">
-        <fieldset>
-        <legend>$pName</legend>
-        <div class="tr">
-        EOT;
-        echo ("<label for='mar'>Bestellt</label> <input id='mar' type='radio' name='status$inputName' " . (($s == "bestellt") ?  "checked"   : "")  . " value='fertig'>");
-        echo ("<label for='mar'>Im Ofen</label> <input id='mar' type='radio' name='status$inputName' " . (($s == "imOfen") ?  "checked"   : "")  . " value='fertig'>");
-        echo ("<label for='mar'>Fertig</label> <input id='mar' type='radio' name='status$inputName' " . (($s == "fertig") ?  "checked"   : "")  . " value='fertig'>");
-        echo ("<label for='mar'>Unterwegs</label> <input id='mar' type='radio' name='status$inputName' " . (($s == "unterwegs") ?  "checked"   : "")  . " value='fertig'>");
-        echo ("<label for='mar'>Geliefert</label> <input id='mar' type='radio' name='status$inputName' " . (($s == "geliefert") ?  "checked"   : "")  . " value='fertig'> </fieldset> </div>");
+        $t = 0;
+        //$this->generatePageFooter();
     }
 
     /**
@@ -157,38 +138,9 @@ class Kunde extends Page
     {
         parent::processReceivedData();
         // to do: call processReceivedData() for all members
-
-        if (isset($_POST["pizzen"]) && isset($_POST["adresse"])) {
-            $this->pizzen = $_POST["pizzen"];
-            $adresse = htmlspecialchars($_POST["adresse"]);
-
-            $sqlInsertBestellung = "INSERT INTO bestellung (BestellungID, Adresse, Bestellzeitpunkt) values (DEFAULT, '$adresse', DEFAULT);";
-            $this->_database->query($sqlInsertBestellung);
-            $fBestellungId = $this->_database->insert_id;
-
-            if (isset($_POST['adresse'])) {
-                $_SESSION['bID'] = $fBestellungId;
-                $_SESSION['LastAccess'] = time();
-            }
-
-
-
-
-            for ($i = 0; $i < count($this->pizzen); $i++) {
-                $sqlAbfrage = "Select PizzaNummer from angebot where PizzaName ='" . $this->pizzen[$i] . "';";
-                $recordSet = $this->_database->query($sqlAbfrage);
-                if (!$recordSet) {
-                    throw new Exception("Query failed: " . $this->_database->error);
-                }
-
-                $recordId = $recordSet->fetch_assoc();
-                $sqlInsertBesPizza = "INSERT INTO bestelltepizza(PizzaID, fBestellungID, fPizzaNummer, Status) VALUES (DEFAULT, $fBestellungId , " . $recordId["PizzaNummer"] . ", 'bestellt');";
-                $this->_database->query($sqlInsertBesPizza);
-            }
-
-
-            $recordSet->free();
-        }
+        /*
+        BLEIBT BEI KUNDENSTATUS LEER!
+        */
     }
 
     /**
@@ -206,7 +158,8 @@ class Kunde extends Page
     public static function main()
     {
         try {
-            $page = new Kunde();
+            $page = new KundenStatus();
+            header("Content-type: application/json; charset=UTF-8");
             $page->processReceivedData();
             $page->generateView();
         } catch (Exception $e) {
@@ -218,7 +171,7 @@ class Kunde extends Page
 
 // This call is starting the creation of the page. 
 // That is input is processed and output is created.
-Kunde::main();
+KundenStatus::main();
 
 // Zend standard does not like closing php-tag!
 // PHP doesn't require the closing tag (it is assumed when the file ends). 

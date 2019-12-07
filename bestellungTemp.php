@@ -119,7 +119,7 @@ class Bestellung extends Page
             $preis = $pObj->getPizzaPreis();
             echo<<<EOT
             <div class = "pizza">
-            <img src="img/pizza_ma.png" width="125" height="125" alt="Margherita">
+            <img src="img/pizza_ma.png" width="125" height="125" alt="Margherita" id="img$pName">
             <p data-preis="$preis" id="$pName">$pName</p>
             <p>$preis €</p>
             </div>
@@ -133,16 +133,12 @@ class Bestellung extends Page
             Warenkorb
         </h2>
         <form id="ware" action="kundeTemp.php" method="POST" accept-charset="UTF-8">
-            <select name="pizzen[]" size="7"  multiple tabindex="0"> 
-                <option value="Margherita" selected>Margherita</option>
-                <option value="Salami" selected>Salami</option>
-                <option value="Hawaii" selected>Hawaii</option>
-                <option value="Hawaii" selected>Hawaii</option>
+            <select name="pizzen[]" size="10" multiple tabindex="0">
             </select>
-            <p>14.50€</p>
-            <p><input type="text" name="adresse" value="adresse" placeholder="Ihre Adresse" required></p>
-            <button type="button" tabindex="1" accesskey="l">Alle Löschen</button>
-            <button type="button" tabindex="2" accesskey="a">Auswahl Löschen</button>
+            <div id="pPreis"> </div>
+            <p><input type="text" name="adresse" value="" placeholder="Ihre Adresse" required></p>
+            <button type="button" tabindex="1" accesskey="l" onclick = deleteAll()>Alle Löschen</button>
+            <button type="button" tabindex="2" accesskey="a" onclick = deleteFew()>Auswahl Löschen</button>
             <input type="submit" tabindex="3" value="Bestellen">
         </form>
         </section>

@@ -88,8 +88,9 @@ class Baecker extends Page
          
         }
         $recordSet->free();
+        if($this->bestellung != null){
         foreach($this->bestellung as $key => $obj){
-            $sqlBestellung = "SELECT PizzaID,PizzaNummer, PizzaName, Preis, Status FROM bestellung, bestelltepizza, angebot WHERE PizzaNummer = fPizzaNummer AND BestellungID = fBestellungID AND BestellungID = $key AND Status != 'fertig' or 'unterwegs' or 'geliefert';";
+            $sqlBestellung = "SELECT PizzaID,PizzaNummer, PizzaName, Preis, Status FROM bestellung, bestelltepizza, angebot WHERE PizzaNummer = fPizzaNummer AND BestellungID = fBestellungID AND BestellungID = $key AND Status = 'bestellt' or 'imOfen';";
             $recordSet = $this->_database->query($sqlBestellung);
             $pizzen = array();
             if(!$recordSet){
@@ -106,6 +107,7 @@ class Baecker extends Page
        
 
         $recordSet->free();
+    }
     }
     
     /**
@@ -128,6 +130,7 @@ class Baecker extends Page
         <section id="bestellBereich">
         <form action="baeckerTemp.php" method="POST" id="test1">
         EOT;
+        if($this->bestellung != null){
         foreach($this->bestellung as $bID => $bObj){
             $pizzArr = $bObj->pi;
             for($i=0; $i < count($pizzArr); $i++){
@@ -161,6 +164,10 @@ class Baecker extends Page
         </form>
         </section>
         EOT;
+    }else{
+        echo "Keine Bestellungen.";
+    }
+
         $this->generatePageFooter();
     }
     
