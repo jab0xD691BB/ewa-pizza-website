@@ -1,5 +1,7 @@
 var preis = 0.00;
 var piz = null;
+var select = document.getElementsByTagName("select")[0];
+var preisText = document.getElementById("pPreis").firstChild.nodeValue;
 
 class Pizzen{
     constructor(){
@@ -15,14 +17,20 @@ class Pizzen{
     }
 }
 
+//init wird vom body aufgerufen, pizza objekte werden angelegt
 
 function init() {
     "use strict";
 
     var imgPizza = document.getElementsByTagName("img");
-    for (var i = 0; i < imgPizza.length; i++) {
+    for (let i = 0; i < imgPizza.length; i++) {
         imgPizza[i].addEventListener("click", pizzaClick);
     }
+
+    var inputAdresse = document.getElementById("inputAdr");
+
+    inputAdresse.addEventListener("change", checkBeforeSubmit);
+
 
     piz = new Pizzen();
     var divs = document.getElementsByTagName("section")[0].getElementsByTagName("div");
@@ -38,42 +46,32 @@ function init() {
 
 function pizzaClick() {
     "use strict";
-    let select = document.getElementsByTagName("select")[0];
 
     switch (event.target.id) {
         case "imgMargherita":
-            console.log("Margherita");
             select.appendChild(newOption("Margherita"));
-            preis += parseFloat(document.getElementById("Margherita").getAttribute("data-preis"));
+            preis += parseFloat(piz.getPreis("Margherita"));
             break;
         case "imgSalami":
-            console.log("Salami");
             select.appendChild(newOption("Salami"));
-            preis += parseFloat(document.getElementById("Salami").getAttribute("data-preis"));
+            preis += parseFloat(piz.getPreis("Salami"));
             break;
         case "imgHawaii":
-            console.log("Hawaii");
             select.appendChild(newOption("Hawaii"));
-            preis += parseFloat(document.getElementById("Hawaii").getAttribute("data-preis"));
-
+            preis += parseFloat(piz.getPreis("Hawaii"));
             break;
         case "imgFunghi":
-            console.log("Funghi");
             select.appendChild(newOption("Funghi"));
-            preis += parseFloat(document.getElementById("Funghi").getAttribute("data-preis"));
-
+            preis += parseFloat(piz.getPreis("Funghi"));
             break;
         case "imgProsciutto":
-            console.log("Prosciutto");
             select.appendChild(newOption("Prosciutto"));
-            preis += parseFloat(document.getElementById("Prosciutto").getAttribute("data-preis"));
+            preis += parseFloat(piz.getPreis("Prosciutto"));
             break;
     }
 
-
-    let newPreis = document.createTextNode(preis);
-    let divPreis = document.getElementById("pPreis");
-    divPreis.firstChild.nodeValue = preis.toFixed(2) + "€";
+    
+    preisText = preis.toFixed(2) + "€";
 
 }
 
@@ -91,22 +89,21 @@ function newOption(pName) {
 function deleteAll() {
     "use strict";
 
-    let selectedOpt = document.getElementsByTagName("select")[0].getElementsByTagName("option");
+    let selectedOpt = select[0].getElementsByTagName("option");
 
     while (selectedOpt.length != 0) {
         selectedOpt[0].remove()
     }
 
-    document.getElementById("pPreis").firstChild.nodeValue = "";
+    preisText = "";
     preis = 0;
 }
 
 function deleteFew() {
     "use strict";
 
-    let selectedOpt = document.getElementsByTagName("select")[0].getElementsByTagName("option");
+    let selectedOpt = select[0].getElementsByTagName("option");
     let divPreis = document.getElementById("pPreis");
-
 
     for (var i = 0; i < selectedOpt.length; i++) {
         if (selectedOpt[i].selected) {
@@ -118,14 +115,20 @@ function deleteFew() {
     }
 
     if(preis >= 0){
-        document.getElementById("pPreis").firstChild.nodeValue = preis.toFixed(2) + "€";
+        preisText = preis.toFixed(2) + "€";
         preis = 0;
     }else{
-        document.getElementById("pPreis").firstChild.nodeValue = "";
+        preisText = "";
     }
     
 }
 
+function checkBeforeSubmit(){
+    let text = inputAdresse.value;
+    if(text.length > 1 && select.getElementsByTagName("option") > 0){
+        document.getElementById("bestellButton").disabled = false;
+    }
+}
 
 
 

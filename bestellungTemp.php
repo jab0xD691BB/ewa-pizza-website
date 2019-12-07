@@ -136,10 +136,10 @@ class Bestellung extends Page
             <select name="pizzen[]" size="10" multiple tabindex="0">
             </select>
             <div id="pPreis"> </div>
-            <p><input type="text" name="adresse" value="" placeholder="Ihre Adresse" required></p>
+            <p><input type="text" name="adresse" id="inputAdr" value="" placeholder="Ihre Adresse" required></p>
             <button type="button" tabindex="1" accesskey="l" onclick = deleteAll()>Alle Löschen</button>
             <button type="button" tabindex="2" accesskey="a" onclick = deleteFew()>Auswahl Löschen</button>
-            <input type="submit" tabindex="3" value="Bestellen">
+            <input type="submit" tabindex="3" id="bestellButton"  value="Bestellen">
         </form>
         </section>
         EOT;
