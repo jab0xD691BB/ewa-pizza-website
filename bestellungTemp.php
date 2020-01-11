@@ -135,13 +135,18 @@ class Bestellung extends Page
         <form id="ware" action="kundeTemp.php" method="POST" accept-charset="UTF-8">
             <select name="pizzen[]" size="10" multiple tabindex="0">
             </select>
-            <div id="pPreis"> </div>
+            <div id="pPreis">€</div>
             <p><input type="text" name="adresse" id="inputAdr" value="" placeholder="Ihre Adresse" required></p>
             <button type="button" tabindex="1" accesskey="l" onclick = deleteAll()>Alle Löschen</button>
             <button type="button" tabindex="2" accesskey="a" onclick = deleteFew()>Auswahl Löschen</button>
             <input type="submit" tabindex="3" id="bestellButton"  value="Bestellen">
         </form>
         </section>
+        <script src="breh.js"></script>
+        <script>iinit()</script>
+        <noscript>
+        <p>Bitte aktivieren Sie JavaScript!</p>
+        </noscript>
         EOT;
         $this->generatePageFooter();
     }

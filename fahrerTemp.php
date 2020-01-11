@@ -141,12 +141,11 @@ class PageTemplate extends Page
             <span>geliefert</span>
             <br>
             EOT;
-            echo "<span><input type='radio' name='$bID' value='fertig' ". ($bObj->bestellStatus == "fertig" ? "checked" : "") ."></span>";
-            echo "<span><input type='radio' name='$bID' value='unterwegs' ". ($bObj->bestellStatus == "unterwegs" ? "checked" : "") ."></span>";
-            echo "<span><input type='radio' name='$bID' value='geliefert'". ($bObj->bestellStatus == "geliefert" ? "checked" : "") ."></span>";
+            echo "<span><input type='radio' onclick=\"document.getElementById('test1').submit();\" name='$bID' value='fertig' ". ($bObj->bestellStatus == "fertig" ? "checked" : "") ."></span>";
+            echo "<span><input type='radio' onclick=\"document.getElementById('test1').submit();\" name='$bID' value='unterwegs' ". ($bObj->bestellStatus == "unterwegs" ? "checked" : "") ."></span>";
+            echo "<span><input type='radio' onclick=\"document.getElementById('test1').submit();\" name='$bID' value='geliefert'". ($bObj->bestellStatus == "geliefert" ? "checked" : "") ."></span>";
             echo <<<EOT
             </div>
-            <input type="submit" name="result">
             </form>
             EOT;
             

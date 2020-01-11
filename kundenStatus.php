@@ -1,6 +1,7 @@
 <?php    // UTF-8 marker äöüÄÖÜß€
 session_start();
 $bID = session_id();
+
 /**
  * Class PageTemplate for the exercises of the EWA lecture
  * Demonstrates use of PHP including class and OO.
@@ -135,7 +136,7 @@ class KundenStatus extends Page
      * @return none 
      */
     protected function processReceivedData()
-    {
+    {   
         parent::processReceivedData();
         // to do: call processReceivedData() for all members
         /*

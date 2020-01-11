@@ -103,7 +103,7 @@ abstract class Page
             <title>$headline</title>
         </head>
         
-        <body onload=init()>
+        <body>
         EOT;
 
         
@@ -120,10 +120,6 @@ abstract class Page
     {
         // to do: output common end of HTML code
         echo <<<EOT
-        <script src="bruh.js"></script>
-        <noscript>
-        <p>Bitte aktivieren Sie JavaScript!</p>
-        </noscript>
         </body>
         </html>
         EOT;

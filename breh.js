@@ -4,20 +4,20 @@ var inputAdresse = document.getElementById('inputAdr')
 
 class Pizzen {
     constructor() {
-        this.pizzen = new Array()
+        this.pizzen = new Array();
     }
 
     addPizza(p, pr) {
-        this.pizzen[p] = pr
+        this.pizzen[p] = pr;
     }
 
     getPreis(p) {
-        return this.pizzen[p]
+        return this.pizzen[p];
     }
 }
 
 
-function init() {
+function iinit() {
     "use strict";
 
     var imgPizza = document.getElementsByTagName("img");

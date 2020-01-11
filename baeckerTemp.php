@@ -1,4 +1,4 @@
-<?php	// UTF-8 marker äöüÄÖÜß€
+<?php    // UTF-8 marker äöüÄÖÜß€
 /**
  * Class PageTemplate for the exercises of the EWA lecture
  * Demonstrates use of PHP including class and OO.
@@ -35,7 +35,7 @@ class Baecker extends Page
 {
     // to do: declare reference variables for members 
     // representing substructures/blocks
-    
+
     /**
      * Instantiates members (to be defined above).   
      * Calls the constructor of the parent i.e. page class.
@@ -43,12 +43,12 @@ class Baecker extends Page
      *
      * @return none
      */
-    protected function __construct() 
+    protected function __construct()
     {
         parent::__construct();
         // to do: instantiate members representing substructures/blocks
     }
-    
+
     /**
      * Cleans up what ever is needed.   
      * Calls the destructor of the parent i.e. page class.
@@ -56,7 +56,7 @@ class Baecker extends Page
      *
      * @return none
      */
-    protected function __destruct() 
+    protected function __destruct()
     {
         parent::__destruct();
     }
@@ -75,41 +75,40 @@ class Baecker extends Page
         //$sqlBestellung = "SELECT BestellungID, Adresse, PizzaID,PizzaNummer, PizzaName, Preis, Status FROM bestellung, bestelltepizza, angebot WHERE PizzaNummer = fPizzaNummer AND BestellungID = fBestellungID;";
         $sqlBestellung = "SELECT BestellungID, Adresse, Status FROM bestellung, bestelltepizza where BestellungID=fBestellungID;";
         $recordSet = $this->_database->query($sqlBestellung);
-        if(!$recordSet){
-            throw new Exception("Query failed: ".$this->_database->error);
+        if (!$recordSet) {
+            throw new Exception("Query failed: " . $this->_database->error);
         }
-        
+
         $anzahlRecords = $recordSet->num_rows;
-        while($record = $recordSet->fetch_assoc()){
-           /* $this->pizzenObj [htmlspecialchars($record["PizzaID"])] = new Pizza(htmlspecialchars($record["PizzaID"]), 
+        while ($record = $recordSet->fetch_assoc()) {
+            /* $this->pizzenObj [htmlspecialchars($record["PizzaID"])] = new Pizza(htmlspecialchars($record["PizzaID"]), 
             htmlspecialchars($record["PizzaName"]), htmlspecialchars($record["Preis"]), htmlspecialchars($record["Status"]));*/
             $beObj = new BestellungObj($record["BestellungID"], $record["Adresse"], $record["Status"]);
-            $this->bestellung[$record["BestellungID"]] = $beObj;            
-         
+            $this->bestellung[$record["BestellungID"]] = $beObj;
         }
         $recordSet->free();
-        if($this->bestellung != null){
-        foreach($this->bestellung as $key => $obj){
-            $sqlBestellung = "SELECT PizzaID,PizzaNummer, PizzaName, Preis, Status FROM bestellung, bestelltepizza, angebot WHERE PizzaNummer = fPizzaNummer AND BestellungID = fBestellungID AND BestellungID = $key AND Status = 'bestellt' or 'imOfen';";
-            $recordSet = $this->_database->query($sqlBestellung);
-            $pizzen = array();
-            if(!$recordSet){
-                throw new Exception("Query failed: ".$this->_database->error);
-            }
-            
-            $anzahlRecords = $recordSet->num_rows;
-            while($record = $recordSet->fetch_assoc()){
-                $pizzen[] = new Pizza($record["PizzaID"],$record["PizzaName"],$record["Preis"],$record["Status"]);
+        if ($this->bestellung != null) {
+            foreach ($this->bestellung as $key => $obj) {
+                $sqlBestellung = "SELECT PizzaID,PizzaNummer, PizzaName, Preis, Status FROM bestellung, bestelltepizza, angebot WHERE PizzaNummer = fPizzaNummer AND BestellungID = fBestellungID AND BestellungID = $key AND Status = ('bestellt' or 'imOfen');";
+                $recordSet = $this->_database->query($sqlBestellung);
+                $pizzen = array();
+                if (!$recordSet) {
+                    throw new Exception("Query failed: " . $this->_database->error);
+                }
+
+                $anzahlRecords = $recordSet->num_rows;
+                while ($record = $recordSet->fetch_assoc()) {
+                    $pizzen[] = new Pizza($record["PizzaID"], $record["PizzaName"], $record["Preis"], $record["Status"]);
+                }
+
+                $obj->addPizzaPreis($pizzen);
             }
 
-            $obj->addPizzaPreis($pizzen);
+
+            $recordSet->free();
         }
-       
+    }
 
-        $recordSet->free();
-    }
-    }
-    
     /**
      * First the necessary data is fetched and then the HTML is 
      * assembled for output. i.e. the header is generated, the content
@@ -119,7 +118,7 @@ class Baecker extends Page
      *
      * @return none
      */
-    protected function generateView() 
+    protected function generateView()
     {
         $this->getViewData();
         $this->generatePageHeader('to do: change headline');
@@ -130,10 +129,10 @@ class Baecker extends Page
         <section id="bestellBereich">
         <form action="baeckerTemp.php" method="POST" id="test1">
         EOT;
-        if($this->bestellung != null){
-        foreach($this->bestellung as $bID => $bObj){
+
+        foreach ($this->bestellung as $bID => $bObj) {
             $pizzArr = $bObj->pi;
-            for($i=0; $i < count($pizzArr); $i++){
+            for ($i = 0; $i < count($pizzArr); $i++) {
                 echo <<<EOT
                 <div class="table">
                 <div class="tr">
@@ -145,13 +144,13 @@ class Baecker extends Page
                 <div class="th">{$pizzArr[$i]->getPizzaName()}</div>
                 EOT;
                 echo "<div class='td'>";
-                echo "<input type='radio' name='".$pizzArr[$i]->getId() ."' value='bestellt' ". (($pizzArr[$i]->getPizzaStatus() == "bestellt") ? "checked": "") ." > ";
+                echo "<input type='radio' onclick=\"document.getElementById('test1').submit();\" name='" . $pizzArr[$i]->getId() . "' value='bestellt' " . (($pizzArr[$i]->getPizzaStatus() == "bestellt") ? "checked" : "") . " > ";
                 echo "</div>";
                 echo "<div class='td'>";
-                echo "<input type='radio' name='".$pizzArr[$i]->getId()."' value='imOfen' ". (($pizzArr[$i]->getPizzaStatus() == "imOfen") ? "checked": "") ." > ";
+                echo "<input type='radio' onclick=\"document.getElementById('test1').submit();\" name='" . $pizzArr[$i]->getId() . "' value='imOfen' " . (($pizzArr[$i]->getPizzaStatus() == "imOfen") ? "checked" : "") . " > ";
                 echo "</div>";
                 echo "<div class='td'>";
-                echo "<input type='radio' name='".$pizzArr[$i]->getId()."' value='fertig'". (($pizzArr[$i]->getPizzaStatus() == "fertig") ? "checked": "") ." > ";
+                echo "<input type='radio' onclick=\"document.getElementById('test1').submit();\" name='" . $pizzArr[$i]->getId() . "' value='fertig'" . (($pizzArr[$i]->getPizzaStatus() == "fertig") ? "checked" : "") . " > ";
                 echo <<<EOT
                 </div>
                 </div>
@@ -160,44 +159,41 @@ class Baecker extends Page
         }
         //{$pizzaArr[$i]->getPizzaStatus() == "Bestellt" ? "checked" : "" }
         echo <<<EOT
-        <input type="submit" name="result">
+        
         </form>
         </section>
         EOT;
-    }else{
-        echo "Keine Bestellungen.";
-    }
+
 
         $this->generatePageFooter();
     }
-    
+
     /**
      * Processes the data that comes via GET or POST i.e. CGI.
      * If this page is supposed to do something with submitted
      * data do it here. 
      * If the page contains blocks, delegate processing of the 
-	 * respective subsets of data to them.
+     * respective subsets of data to them.
      *
      * @return none 
      */
-    protected function processReceivedData() 
+    protected function processReceivedData()
     {
         parent::processReceivedData();
         // to do: call processReceivedData() for all members
 
         $pizzaID;
         $pizzaStatus;
-        
+
         //UPDATE `bestelltepizza` SET `PizzaID`=[value-1],`fBestellungID`=[value-2],`fPizzaNummer`=[value-3],`Status`=[value-4] WHERE 1
-        
+
         foreach ($_POST as $param_name => $param_val) {
-            if(isset($_POST[$param_name])){
+            if (isset($_POST[$param_name])) {
                 $pizzaID = $param_name;
                 $pizzaStatus = $param_val;
-                
+
                 $sqlInsertBestellung = "UPDATE bestelltepizza set Status = '$pizzaStatus' where PizzaID = $pizzaID;";
                 $this->_database->query($sqlInsertBestellung);
-
             }
         }
     }
@@ -213,15 +209,14 @@ class Baecker extends Page
      * call it without first creating an instance of the class.
      *
      * @return none 
-     */    
-    public static function main() 
+     */
+    public static function main()
     {
         try {
             $page = new Baecker();
             $page->processReceivedData();
             $page->generateView();
-        }
-        catch (Exception $e) {
+        } catch (Exception $e) {
             header("Content-type: text/plain; charset=UTF-8");
             echo $e->getMessage();
         }
