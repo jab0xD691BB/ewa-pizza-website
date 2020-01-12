@@ -89,7 +89,7 @@ class Baecker extends Page
         $recordSet->free();
         if ($this->bestellung != null) {
             foreach ($this->bestellung as $key => $obj) {
-                $sqlBestellung = "SELECT PizzaID,PizzaNummer, PizzaName, Preis, Status FROM bestellung, bestelltepizza, angebot WHERE PizzaNummer = fPizzaNummer AND BestellungID = fBestellungID AND BestellungID = $key AND Status = ('bestellt' or 'imOfen');";
+                $sqlBestellung = "SELECT PizzaID,PizzaNummer, PizzaName, Preis, Status FROM bestellung, bestelltepizza, angebot WHERE PizzaNummer = fPizzaNummer AND BestellungID = fBestellungID AND BestellungID = $key AND NOT Status = 'geliefert';";
                 $recordSet = $this->_database->query($sqlBestellung);
                 $pizzen = array();
                 if (!$recordSet) {
@@ -120,20 +120,23 @@ class Baecker extends Page
      */
     protected function generateView()
     {
+        $countPizz = 0;
         $this->getViewData();
         $this->generatePageHeader('to do: change headline');
         // to do: call generateView() for all members
         // to do: output view of this page
+        echo "<meta http-equiv='refresh' content='5' />";
         echo  "<h1>Baecker</h1>";
         echo <<<EOT
         <section id="bestellBereich">
         <form action="baeckerTemp.php" method="POST" id="test1">
         EOT;
-
-        foreach ($this->bestellung as $bID => $bObj) {
-            $pizzArr = $bObj->pi;
-            for ($i = 0; $i < count($pizzArr); $i++) {
-                echo <<<EOT
+        if ($this->bestellung != null) {
+            foreach ($this->bestellung as $bID => $bObj) {
+                $pizzArr = $bObj->pi;
+                $countPizz += count($pizzArr);
+                for ($i = 0; $i < count($pizzArr); $i++) {
+                    echo <<<EOT
                 <div class="table">
                 <div class="tr">
                 <div class="th"></div>               
@@ -143,19 +146,23 @@ class Baecker extends Page
                 </div>
                 <div class="th">{$pizzArr[$i]->getPizzaName()}</div>
                 EOT;
-                echo "<div class='td'>";
-                echo "<input type='radio' onclick=\"document.getElementById('test1').submit();\" name='" . $pizzArr[$i]->getId() . "' value='bestellt' " . (($pizzArr[$i]->getPizzaStatus() == "bestellt") ? "checked" : "") . " > ";
-                echo "</div>";
-                echo "<div class='td'>";
-                echo "<input type='radio' onclick=\"document.getElementById('test1').submit();\" name='" . $pizzArr[$i]->getId() . "' value='imOfen' " . (($pizzArr[$i]->getPizzaStatus() == "imOfen") ? "checked" : "") . " > ";
-                echo "</div>";
-                echo "<div class='td'>";
-                echo "<input type='radio' onclick=\"document.getElementById('test1').submit();\" name='" . $pizzArr[$i]->getId() . "' value='fertig'" . (($pizzArr[$i]->getPizzaStatus() == "fertig") ? "checked" : "") . " > ";
-                echo <<<EOT
+                    echo "<div class='td'>";
+                    echo "<input type='radio' onclick=\"document.getElementById('test1').submit();\" name='" . $pizzArr[$i]->getId() . "' value='bestellt' " . (($pizzArr[$i]->getPizzaStatus() == "bestellt") ? "checked" : "") . " > ";
+                    echo "</div>";
+                    echo "<div class='td'>";
+                    echo "<input type='radio' onclick=\"document.getElementById('test1').submit();\" name='" . $pizzArr[$i]->getId() . "' value='imOfen' " . (($pizzArr[$i]->getPizzaStatus() == "imOfen") ? "checked" : "") . " > ";
+                    echo "</div>";
+                    echo "<div class='td'>";
+                    echo "<input type='radio' onclick=\"document.getElementById('test1').submit();\" name='" . $pizzArr[$i]->getId() . "' value='fertig'" . (($pizzArr[$i]->getPizzaStatus() == "fertig") ? "checked" : "") . " > ";
+                    echo <<<EOT
                 </div>
                 </div>
                 EOT;
+                }
             }
+        }
+        if ($countPizz == 0) {
+            echo ("Keine Bestellungen");
         }
         //{$pizzaArr[$i]->getPizzaStatus() == "Bestellt" ? "checked" : "" }
         echo <<<EOT
