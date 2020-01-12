@@ -1,0 +1,67 @@
+body{
+    background-color: rgb(255, 243, 243);
+    width: 100%;
+}
+
+h1{
+    color: black;
+    text-align: center;
+}
+
+h2{
+    border-bottom: 1px solid black;
+    text-align: left;
+}
+
+.bestellungWrapper{
+    width: 1268px;
+    margin: 0px auto;
+
+}
+
+.speisekarte{
+    margin: 0px auto;
+    width: 900px;
+    height: 100%;
+    display: inline-block;
+}
+
+.pizza{
+    display: inline-block;
+    border-bottom: 1px solid pink;
+    width: 298px;
+    text-align: center;
+    margin-top: 20px;
+}
+
+.warenkorb{
+    border-left: 1px solid;
+    padding-left: 10px;
+    padding-right: 10px;
+    padding-bottom: 10px;
+    display: inline-block;
+    margin-left: 50px;
+    vertical-align: top;
+}
+
+select, option{
+    background-color: rgb(255, 255, 255);
+    width: 100%;
+}
+
+.inputBestellung{
+    width: 100%;
+}
+
+#inputAdr{
+    width: 100%;
+}
+
+.meineBestellungen{
+}
+
+.meineBestellungen .table{
+    width: 500px;
+    margin: 0px auto;
+    margin-top: 20px;
+}

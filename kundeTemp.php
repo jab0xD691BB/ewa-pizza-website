@@ -122,11 +122,13 @@ class Kunde extends Page
         <script>
         requestData();
         </script>
+        <section class="meineBestellungen">
         EOT;
         foreach ($this->pizzenObj as $key => $obj) {
             $nameId = $obj->getPizzaName() . (string) $obj->getId();
             $this->showBestellung($obj->getPizzaName(), $nameId, $obj->getPizzaStatus());
         }
+        echo "</section>";
 
         $this->generatePageFooter();
     }

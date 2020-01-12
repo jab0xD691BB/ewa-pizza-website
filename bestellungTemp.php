@@ -111,6 +111,7 @@ class Bestellung extends Page
             Bestellung
         </h1>
         </header>
+        <div class="bestellungWrapper">
         <section class="speisekarte">
         <h2>Speisekarte</h2>
         EOT;
@@ -135,14 +136,20 @@ class Bestellung extends Page
         <form id="ware" action="kundeTemp.php" method="POST" accept-charset="UTF-8">
             <select name="pizzen[]" size="10" multiple tabindex="0">
             </select>
-            <div id="pPreis">€</div>
-            <p><input type="text" name="adresse" id="inputAdr" value="" placeholder="Ihre Adresse" required></p>
+            <div id="pPreis">0€</div>
+            <p><input class="inputBestellung" type="text" name="name" id="inputName" value="" placeholder="Name" ></p>
+            <p><input class="inputBestellung" type="text" name="vorname" id="inputVorname" value="" placeholder="Vorname" ></p>
+            <p><input class="inputBestellung" type="text" name="adresse" id="inputAdr" value="" placeholder="Straße" required></p>
+            <p><input class="inputBestellung" type="text" name="adresse" id="inputNr" value="" placeholder="Nummer" required></p>
+            <p><input class="inputBestellung" type="text" name="adresse" id="inputPlz" value="" placeholder="Plz" required></p>
+            <p><input class="inputBestellung" type="text" name="adresse" id="inputStadt" value="" placeholder="Stadt" required></p>
             <button type="button" tabindex="1" accesskey="l" onclick = deleteAll()>Alle Löschen</button>
             <button type="button" tabindex="2" accesskey="a" onclick = deleteFew()>Auswahl Löschen</button>
             <input type="submit" tabindex="3" id="bestellButton"  value="Bestellen">
         </form>
         </section>
-        <script src="breh.js"></script>
+        </div>
+        <script src="myjs.js"></script>
         <script>iinit()</script>
         <noscript>
         <p>Bitte aktivieren Sie JavaScript!</p>

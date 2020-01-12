@@ -43,7 +43,7 @@ function pizzaClick() {
     "use strict";
     let select = document.getElementsByTagName("select")[0];
 
-    switch (event.target.id) {
+    /*switch (event.target.id) {
         case "imgMargherita":
             select.appendChild(newOption("Margherita"));
             preis += parseFloat(piz.getPreis("Margherita"));
@@ -66,7 +66,13 @@ function pizzaClick() {
             select.appendChild(newOption("Prosciutto"));
             preis += parseFloat(piz.getPreis("Prosciutto"));
             break;
-    }
+    }*/
+
+    let pName = event.target.id;
+    let newpName = pName.substring(3);
+    
+    select.appendChild(newOption(newpName));
+    preis += parseFloat(piz.getPreis(newpName));
 
 
     let divPreis = document.getElementById("pPreis");
@@ -120,7 +126,6 @@ function deleteFew() {
 
     if (preis >= 0) {
         document.getElementById("pPreis").firstChild.nodeValue = preis.toFixed(2) + "€";
-        preis = 0;
     } else {
         document.getElementById("pPreis").firstChild.nodeValue = "";
     }
