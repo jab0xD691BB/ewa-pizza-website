@@ -142,15 +142,16 @@ option:checked {
 }
 
 .meineBestellungen .table{
-    width: 36.250em;
+    width: 38.250em;
     margin: 0px auto;
     margin-top: 1.250em;
     text-align: center;
 }
 
-input[type="radio" i]:disabled {
-    background-color: green;
-}
+
+
+
+
 
 #bestellBereich{
     text-align: center;

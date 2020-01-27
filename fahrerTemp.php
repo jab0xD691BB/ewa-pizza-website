@@ -74,7 +74,7 @@ class PageTemplate extends Page
         // to do: fetch data for this view from the database
         $tmpArray;
         //$sqlBestellung = "SELECT BestellungID, Adresse, PizzaID,PizzaNummer, PizzaName, Preis, Status FROM bestellung, bestelltepizza, angebot WHERE PizzaNummer = fPizzaNummer AND BestellungID = fBestellungID;";
-        $sqlBestellung = "SELECT BestellungID, Adresse , Status FROM bestellung, bestelltepizza where BestellungID =fBestellungID  AND Status != 'geliefert';";
+        $sqlBestellung = "SELECT BestellungID, Adresse , Status FROM bestellung, bestelltepizza where BestellungID =fBestellungID  AND Status in ('fertig' , 'unterwegs') and Status != 'geliefert';";
         $recordSet = $this->_database->query($sqlBestellung);
         if (!$recordSet) {
             throw new Exception("Query failed: " . $this->_database->error);
@@ -133,6 +133,7 @@ class PageTemplate extends Page
         if ($this->bestellung != null) {
             $i = 0;
             foreach ($this->bestellung as $bID => $bObj) {
+                if($bObj->bestellStatus == "fertig" || $bObj->bestellStatus == "unterwegs"){
                 echo ("<form action='fahrerTemp.php' method='POST' id='test$i'>");
                 echo <<<EOT
             <div id="$bID">
@@ -154,6 +155,7 @@ class PageTemplate extends Page
 
             }
             echo ("</section>");
+        }
         } else {
             echo ("Keine Lieferungen.");
         }

@@ -29,14 +29,26 @@ function addPizzaPreis($p){
 
 function allePizzenFertig(){
     $counter = 0;
+    $wahr = 0;
+    if( $this->bestellStatus == "unterwegs"){
+        $wahr = 1;
+    }
     for($i = 0; $i < count($this->pi); $i++){
         if($this->pi[$i]->getPizzaStatus() == "fertig"){
             $counter++;
         }
     }
 
-    if($counter == count($this->pi)){
+    $c = count($this->pi);
+    if($counter == $c){
         $this->bestellStatus = "fertig";
+    }else{
+        $this->bestellStatus = "nichtfertig";
+    }
+
+    if($wahr == 1){
+        $this->bestellStatus = "unterwegs";
+
     }
        
     
