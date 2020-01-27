@@ -126,7 +126,7 @@ class PageTemplate extends Page
         $this->generatePageHeader('to do: change headline');
         // to do: call generateView() for all members
         // to do: output view of this page
-        //echo "<meta http-equiv='refresh' content='5' />";
+        echo "<meta http-equiv='refresh' content='5' />";
         echo "<h1>Fahrer</h1>";
         echo ("<section id=\"fahrerbereich\">");
         

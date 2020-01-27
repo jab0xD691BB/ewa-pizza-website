@@ -163,7 +163,7 @@ class Baecker extends Page
             }
         }
         if ($countPizz == 0) {
-            echo ("Keine Bestellungen");
+            echo ("Keine Bestellungen.");
         }
         //{$pizzaArr[$i]->getPizzaStatus() == "Bestellt" ? "checked" : "" }
         echo <<<EOT
