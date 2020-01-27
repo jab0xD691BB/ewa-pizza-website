@@ -92,6 +92,8 @@ abstract class Page
         $headline = htmlspecialchars($headline);
         header("Content-type: text/html; charset=UTF-8");
         //header('Refresh: 5; url=baeckerTemp.php');
+        //header('Refresh: 5; url=fahrerTemp.php');
+        //<meta http-equiv='refresh' content='5' />
 
         echo <<<EOT
         <!DOCTYPE html>
@@ -99,11 +101,22 @@ abstract class Page
         
         <head>
             <meta charset="UTF-8" />
+            <meta name="viewport" content="width=device-width,initial-scale=1">
             <link rel="stylesheet" type="text/css" href="mycss.css"/>
+            <link rel="stylesheet" href="smartphone.css" media="only screen and (min-width : 320px) and (max-width : 630px)"/>
             <title>$headline</title>
         </head>
         
-        <body>
+        <body onload=changeNavCurrent()>
+        <script src="navjs.js"></script>
+        <nav class="nav">
+        <ul>
+        <li><a href="bestellungTemp.php" title="bestellung">Bestellen</a></li>
+        <li><a href="kundeTemp.php" title="bestellungTemp.php">Kunde</a></li>
+        <li><a href="baeckerTemp.php" title="baecker">Baecker</a></li>
+        <li><a href="fahrerTemp.php" title="bestellungTemp.php">Fahrer</a></li>
+        </ul>
+        </nav>
         EOT;
 
         

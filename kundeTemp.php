@@ -128,6 +128,7 @@ class Kunde extends Page
             $nameId = $obj->getPizzaName() . (string) $obj->getId();
             $this->showBestellung($obj->getPizzaName(), $nameId, $obj->getPizzaStatus());
         }
+        echo "<script>init();</script>";
         echo "</section>";
 
         $this->generatePageFooter();

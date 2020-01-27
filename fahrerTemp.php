@@ -126,28 +126,32 @@ class PageTemplate extends Page
         $this->generatePageHeader('to do: change headline');
         // to do: call generateView() for all members
         // to do: output view of this page
-        echo "<meta http-equiv='refresh' content='5' />";
+        //echo "<meta http-equiv='refresh' content='5' />";
         echo "<h1>Fahrer</h1>";
         echo ("<section id=\"fahrerbereich\">");
+        
         if ($this->bestellung != null) {
+            $i = 0;
             foreach ($this->bestellung as $bID => $bObj) {
-                echo ("<form action='fahrerTemp.php' method='POST' id='test1'>");
+                echo ("<form action='fahrerTemp.php' method='POST' id='test$i'>");
                 echo <<<EOT
             <div id="$bID">
-            <p>$bID, $bObj->adresse, $bObj->preis </p>
+            <p>$bID, $bObj->adresse, $bObj->preis € </p>
             <p>$bObj->pizzaToString</p>
-            <span>fertig</span>
+            <span >fertig</span>
             <span>unterwegs</span>
             <span>geliefert</span>
             <br>
             EOT;
-                echo "<span><input type='radio' onclick=\"document.getElementById('test1').submit();\" name='$bID' value='fertig' " . ($bObj->bestellStatus == "fertig" ? "checked" : "") . "></span>";
-                echo "<span><input type='radio' onclick=\"document.getElementById('test1').submit();\" name='$bID' value='unterwegs' " . ($bObj->bestellStatus == "unterwegs" ? "checked" : "") . "></span>";
-                echo "<span><input type='radio' onclick=\"document.getElementById('test1').submit();\" name='$bID' value='geliefert'" . ($bObj->bestellStatus == "geliefert" ? "checked" : "") . "></span>";
+                echo "<span><input type='radio' onclick=\"document.getElementById('test$i').submit();\" name='$bID' value='fertig' " . ($bObj->bestellStatus == "fertig" ? "checked" : "") . "></span>";
+                echo "<span><input type='radio' onclick=\"document.getElementById('test$i').submit();\" name='$bID' value='unterwegs' " . ($bObj->bestellStatus == "unterwegs" ? "checked" : "") . "></span>";
+                echo "<span><input type='radio' onclick=\"document.getElementById('test$i').submit();\" name='$bID' value='geliefert'" . ($bObj->bestellStatus == "geliefert" ? "checked" : "") . "></span>";
                 echo <<<EOT
             </div>
             </form>
             EOT;
+            $i++;
+
             }
             echo ("</section>");
         } else {

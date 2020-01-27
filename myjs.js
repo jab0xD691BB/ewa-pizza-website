@@ -37,41 +37,18 @@ function iinit() {
         var preis = pPreis.getAttribute("data-preis");
         piz.addPizza(pname, preis);
     }
+
 }
 
 function pizzaClick() {
     "use strict";
     let select = document.getElementsByTagName("select")[0];
 
-    /*switch (event.target.id) {
-        case "imgMargherita":
-            select.appendChild(newOption("Margherita"));
-            preis += parseFloat(piz.getPreis("Margherita"));
-            break;
-        case "imgSalami":
-            select.appendChild(newOption("Salami"));
-            preis += parseFloat(piz.getPreis("Salami"));
-            break;
-        case "imgHawaii":
-            select.appendChild(newOption("Hawaii"));
-            preis += parseFloat(piz.getPreis("Hawaii"));
-
-            break;
-        case "imgFunghi":
-            select.appendChild(newOption("Funghi"));
-            preis += parseFloat(piz.getPreis("Funghi"));
-
-            break;
-        case "imgProsciutto":
-            select.appendChild(newOption("Prosciutto"));
-            preis += parseFloat(piz.getPreis("Prosciutto"));
-            break;
-    }*/
-
     let pName = event.target.id;
     let newpName = pName.substring(3);
     
-    select.appendChild(newOption(newpName));
+    let newOpt = select.appendChild(newOption(newpName));
+    newOpt.selected = false;
     preis += parseFloat(piz.getPreis(newpName));
 
 
@@ -144,6 +121,17 @@ function checkBeforeSubmit() {
         document.getElementById("bestellButton").disabled = true;
     }
 }
+
+function bestellen(){
+    let selectedOpt = document.getElementsByTagName("select")[0]
+        .getElementsByTagName("option");
+
+    for(let i = 0; i < selectedOpt.length; i++){
+        selectedOpt[i].selected = true;
+        
+    }
+}
+
 
 
 

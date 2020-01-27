@@ -126,8 +126,10 @@ class Baecker extends Page
         // to do: call generateView() for all members
         // to do: output view of this page
         echo "<meta http-equiv='refresh' content='5' />";
-        echo  "<h1>Baecker</h1>";
         echo <<<EOT
+        <header>
+        <h1>Baecker</h1>
+        </header>
         <section id="bestellBereich">
         <form action="baeckerTemp.php" method="POST" id="test1">
         EOT;
@@ -138,13 +140,12 @@ class Baecker extends Page
                 for ($i = 0; $i < count($pizzArr); $i++) {
                     echo <<<EOT
                 <div class="table">
+                <div class="thName">{$pizzArr[$i]->getPizzaName()}</div>
                 <div class="tr">
-                <div class="th"></div>               
                 <div class="th">bestellt</div>
                 <div class="th">im Ofen</div>
                 <div class="th">fertig</div>
                 </div>
-                <div class="th">{$pizzArr[$i]->getPizzaName()}</div>
                 EOT;
                     echo "<div class='td'>";
                     echo "<input type='radio' onclick=\"document.getElementById('test1').submit();\" name='" . $pizzArr[$i]->getId() . "' value='bestellt' " . (($pizzArr[$i]->getPizzaStatus() == "bestellt") ? "checked" : "") . " > ";
