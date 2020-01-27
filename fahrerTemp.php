@@ -84,7 +84,7 @@ class PageTemplate extends Page
         while ($record = $recordSet->fetch_assoc()) {
             /* $this->pizzenObj [htmlspecialchars($record["PizzaID"])] = new Pizza(htmlspecialchars($record["PizzaID"]), 
             htmlspecialchars($record["PizzaName"]), htmlspecialchars($record["Preis"]), htmlspecialchars($record["Status"]));*/
-            $beObj = new BestellungObj($record["BestellungID"], $record["Adresse"], $record["Status"]);
+            $beObj = new BestellungObj($record["BestellungID"], htmlspecialchars($record["Adresse"]), $record["Status"]);
             $this->bestellung[$record["BestellungID"]] = $beObj;
         }
         $recordSet->free();
